@@ -25,7 +25,8 @@ public class SecurityConfig {
             .headers(headers -> headers.frameOptions(frame -> frame.disable()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() // Permitir TODO temporalmente para depurar
+                .requestMatchers("/ws/**").permitAll() // Es fundamental permitir el handshake HTTP público
+                .anyRequest().permitAll() // Mantenido permitAll para depuración, ajusta a authenticated() después
             );
         
         return http.build();
@@ -34,10 +35,16 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        
+        // NO incluyas el slash al final (/) en los orígenes. Eso causa 403.
+        configuration.setAllowedOrigins(List.of(
+            "https://frontmedigo.vercel.app",
+            "http://localhost:5173", // Frontend local común en Vite
+            "http://localhost:3000"  // Frontend local común en React/Next
+        ));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true); // Requiere orígenes explícitos (no '*')
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

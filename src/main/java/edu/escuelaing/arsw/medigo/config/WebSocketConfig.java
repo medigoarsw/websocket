@@ -18,9 +18,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // Permitimos todos los orígenes para evitar bloqueos de CORS
+        // Los orígenes deben coincidir exactamente con los del SecurityConfig
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*");
+                .setAllowedOrigins(
+                    "https://frontmedigo.vercel.app",
+                    "http://localhost:5173",
+                    "http://localhost:3000"
+                )
+                .withSockJS(); // CRÍTICO: Necesario si el frontend usa SockJS (ej. para endpoints /ws/info)
     }
 
     @Override
@@ -33,7 +38,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        // Registro del interceptor de seguridad para JWT
+        // Registro del interceptor de seguridad para validar el JWT en STOMP CONNECT
         registration.interceptors(authChannelInterceptor);
     }
 }
