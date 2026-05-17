@@ -36,7 +36,11 @@ class WebSocketConfigTest {
     void registerStompEndpoints_ShouldRegisterWsEndpoint() {
         StompWebSocketEndpointRegistration registration = mock(StompWebSocketEndpointRegistration.class);
         when(endpointRegistry.addEndpoint("/ws")).thenReturn(registration);
-        when(registration.setAllowedOriginPatterns("*")).thenReturn(registration);
+        when(registration.setAllowedOrigins(
+            "https://frontmedigo.vercel.app",
+            "http://localhost:5173",
+            "http://localhost:3000"
+        )).thenReturn(registration);
 
         webSocketConfig.registerStompEndpoints(endpointRegistry);
 
