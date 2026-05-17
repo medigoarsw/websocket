@@ -18,6 +18,7 @@ import java.util.List;
 public class SecurityConfig {
 
     @Bean
+    @SuppressWarnings("java:S4502") // Seguro desactivar CSRF ya que la API usa JWT (StateLess) y no cookies de sesión
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
