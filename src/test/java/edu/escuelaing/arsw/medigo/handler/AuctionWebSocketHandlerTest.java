@@ -39,7 +39,7 @@ class AuctionWebSocketHandlerTest {
         auctionWebSocketHandler.handleBid(auctionId, request);
 
         // Assert
-        String expectedUrl = "http://localhost:8080/api/auctions/1/bids";
-        verify(restTemplate, times(1)).postForEntity(eq(expectedUrl), eq(request), eq(Object.class));
+        String expectedUrl = "http://localhost:8080/api/auctions/{auctionId}/bids";
+        verify(restTemplate, times(1)).postForEntity(eq(expectedUrl), eq(request), eq(Object.class), eq(auctionId));
     }
 }

@@ -50,8 +50,8 @@ class LocationWebSocketHandlerTest {
         );
 
         // Check backend notification
-        String expectedUrl = "http://localhost:8080/api/logistics/deliveries/DEL-123/location";
-        verify(restTemplate, times(1)).postForEntity(eq(expectedUrl), eq(payload), eq(Object.class));
+        String expectedUrl = "http://localhost:8080/api/logistics/deliveries/{deliveryId}/location";
+        verify(restTemplate, times(1)).postForEntity(eq(expectedUrl), eq(payload), eq(Object.class), eq(deliveryId));
     }
 
     @Test
