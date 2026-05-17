@@ -40,8 +40,8 @@ public class LocationWebSocketHandler {
 
         // 2. Notificar al backend REST (opcional, para persistencia o lógica de negocio)
         try {
-            String url = backendUrl + "/api/logistics/deliveries/" + deliveryId + "/location";
-            restTemplate.postForEntity(url, payload, Object.class);
+            String url = backendUrl + "/api/logistics/deliveries/{deliveryId}/location";
+            restTemplate.postForEntity(url, payload, Object.class, deliveryId);
         } catch (Exception e) {
             log.error("Failed to forward location update to backend: {}", e.getMessage());
         }

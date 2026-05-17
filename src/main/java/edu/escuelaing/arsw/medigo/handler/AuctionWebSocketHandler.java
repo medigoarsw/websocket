@@ -26,8 +26,8 @@ public class AuctionWebSocketHandler {
 
         try {
             // Forward the command to the main REST backend
-            String url = backendUrl + "/api/auctions/" + auctionId + "/bids";
-            restTemplate.postForEntity(url, request, Object.class);
+            String url = backendUrl + "/api/auctions/{auctionId}/bids";
+            restTemplate.postForEntity(url, request, Object.class, auctionId);
             log.info("Bid forwarded to backend for auction {}", auctionId);
         } catch (Exception e) {
             log.error("Failed to forward bid to backend: {}", e.getMessage());
