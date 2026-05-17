@@ -18,14 +18,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // Los orígenes deben coincidir exactamente con los del SecurityConfig
         registry.addEndpoint("/ws")
                 .setAllowedOrigins(
                     "https://frontmedigo.vercel.app",
                     "http://localhost:5173",
                     "http://localhost:3000"
-                )
-                .withSockJS(); // CRÍTICO: Necesario si el frontend usa SockJS (ej. para endpoints /ws/info)
+                ); // Sin withSockJS() para que funcione con raw WebSockets
     }
 
     @Override
